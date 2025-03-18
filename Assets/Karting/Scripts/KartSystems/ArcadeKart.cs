@@ -78,9 +78,9 @@ namespace KartGame.KartSystems
 
         public ArcadeKart.Stats baseStats = new ArcadeKart.Stats
         {
-            TopSpeed            = 10f,
-            Acceleration        = 5f,
-            AccelerationCurve   = 4f,
+            TopSpeed            = 50f,
+            Acceleration        = 20f,
+            AccelerationCurve   = 10f,
             Braking             = 10f,
             ReverseAcceleration = 5f,
             ReverseSpeed        = 5f,
@@ -233,6 +233,7 @@ namespace KartGame.KartSystems
 
         void Awake()
         {
+            
             Rigidbody = GetComponent<Rigidbody>();
             m_Inputs = GetComponents<IInput>();
 
@@ -262,6 +263,7 @@ namespace KartGame.KartSystems
                     Instantiate(NozzleVFX, nozzle, false);
                 }
             }
+            
         }
 
         void AddTrailToWheel(WheelCollider wheel)
