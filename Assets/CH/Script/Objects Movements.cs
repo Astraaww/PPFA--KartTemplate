@@ -6,23 +6,18 @@ public class ObjectsMovements : MonoBehaviour
     public GameObject ptArrivé;
     public float speed = 5f;
 
-    //private void OnTriggerEnter (Collider col)
-    //{
-    //    Movement();
-    //}
+    private bool isTriggered = false;
 
-    private void Update()
+    private void OnTriggerEnter(Collider col)
     {
-        Movement();
+        isTriggered = true;
     }
 
-    private void Movement()
+    void Update()
     {
-            metro.transform.position = Vector3.MoveTowards(metro.transform.position, ptArrivé.transform.position, speed);
-        
-        while(metro.transform.position != ptArrivé.transform.position)
+        if (isTriggered)
         {
-            Debug.Log("Move");
+            metro.transform.position = Vector3.MoveTowards(metro.transform.position, ptArrivé.transform.position, speed);
         }
     }
 }
