@@ -185,6 +185,7 @@ namespace KartGame.KartSystems
         public void SetCanMove(bool move) => m_CanMove = move;
         public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
 
+        
         private void ActivateDriftVFX(bool active)
         {
             foreach (var vfx in m_DriftSparkInstances)
