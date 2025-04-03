@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
 
-namespace KartGame.KartSystems {
+namespace KartGame.KartSystems
+{
 
     public class KeyboardInput : BaseInput
     {
         public string TurnInputName = "Horizontal";
-        public string AccelerateButtonName = "Accelerate";
-        public string BrakeButtonName = "Brake";
+        public string AccelerateAxisName = "Accelerate";
+        public string BrakeAxisName = "Brake";
+        public string BoostButtonName = "Boost";
 
-        public override InputData GenerateInput() {
+        public override InputData GenerateInput()
+        {
             return new InputData
             {
-                Accelerate = Input.GetButton(AccelerateButtonName),
-                Brake = Input.GetButton(BrakeButtonName),
-                TurnInput = Input.GetAxis("Horizontal")
+                Accelerate = Input.GetAxis(AccelerateAxisName) > 0.1f,
+                Brake = Input.GetAxis(BrakeAxisName) < -0.1f,
+                TurnInput = Input.GetAxis("Horizontal"),
+                Boost = Input.GetButton(BoostButtonName),
             };
         }
     }
