@@ -7,7 +7,7 @@ public class PlayerBoost : MonoBehaviour
 {
     [Header("Métriques")]
     private float initialSpeed;
-    private float boostForce = 30f;
+    private float boostForce = 20f;
     private float boostDuration = 1.5f;
     
     private Vector3 originalVelocity;
@@ -21,7 +21,7 @@ public class PlayerBoost : MonoBehaviour
     [SerializeField] private Image imageCooldown;
 
     private bool isCooldown = false;
-    public float cooldownTime = 20f;
+    private float cooldownDuration = 20f; //la durée du CD
     private float cooldownTimer = 0f;
 
     private void Awake()
@@ -29,17 +29,25 @@ public class PlayerBoost : MonoBehaviour
         keyboardInput = GetComponent<KeyboardInput>();
         rb = GetComponent<Rigidbody>();
 
-        imageCooldown.fillAmount = 0;
+    }
+
+    private void Start()
+    {
+        imageCooldown.fillAmount = 1f;
     }
 
     private void Update()
     {
+
+        Debug.Log("On cd ? " + isCooldown);
+
         if (keyboardInput.GenerateInput().Boost && !isCooldown) //Si j'active le boost et qu'il est pas en CD : j'active mon boost
         {
             originalVelocity = rb.linearVelocity; //stock la vélocité d'avant le boost
             initialSpeed = kart.baseStats.TopSpeed; //stock la TopSpeed d'avant le boost
 
             StartCoroutine(BoostCoroutine()); //Active le boost
+            imageCooldown.fillAmount = 0f;
         }
         else
         {
@@ -54,9 +62,10 @@ public class PlayerBoost : MonoBehaviour
 
     IEnumerator BoostCoroutine()
     {
-        isCooldown = true; //Je suis entrain de booster - va automatiquement lancer ApplyCooldown
-        Boosting(); //Méthode qui gère la puisance du boost
-        yield return new WaitForSeconds(boostDuration); //j'attend le temps que le boost soit finit
+        isCooldown = true; 
+        Boosting(); 
+        yield return new WaitForSeconds(boostDuration);
+        ResetStats();
     }
 
     private void Boosting() 
@@ -73,22 +82,25 @@ public class PlayerBoost : MonoBehaviour
         CameraFOVManager.ResetFov();
     }
 
-    private void ApplyCooldown() //si le CD est inférieur à 0, pas en CD. Sinon, il est en CD et update l'UI --> doit être fait dans une update.
+    private void ApplyCooldown() 
     {
-        cooldownTimer = Time.deltaTime; //Update selon le framerate
+        
+        cooldownTimer += Time.deltaTime;
 
-        if (cooldownTimer < 0f) //si mon timer est écoulé
+
+        if (cooldownTimer >= cooldownDuration) 
         {
-            ResetStats();
-            imageCooldown.fillAmount = 0; //Met à jour l'UI
-            
+            cooldownTimer = 0f;
+            //ResetStats();
+            //imageCooldown.fillAmount = 1; //Met à jour l'UI
+
             //Joue un son pour dire que mon spell est up
-            
-            isCooldown = false; //dis que je suis plus en Cd
+
+            isCooldown = false; //plus en Cd
         }
         else
         {
-            imageCooldown.fillAmount = cooldownTimer / cooldownTime; //Sinon : met à jour l'UI
+            imageCooldown.fillAmount = cooldownTimer / cooldownDuration;
         }
     }
 }
