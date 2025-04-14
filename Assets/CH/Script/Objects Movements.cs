@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class ObjectsMovements : MonoBehaviour
 {
@@ -8,9 +9,21 @@ public class ObjectsMovements : MonoBehaviour
 
     private bool isTriggered = false;
 
+    [Header("Sfx")]
+    public AudioSource source1;
+    public AudioSource source2;
+    public AudioClip trainHornSfx;
+    public AudioClip trainPassesSfx;
+
     private void OnTriggerEnter(Collider col)
     {
         isTriggered = true;
+
+        source1.clip = trainHornSfx;
+        source1.Play();
+
+        source2.clip = trainPassesSfx;
+        source2.Play();
     }
 
     void Update()
