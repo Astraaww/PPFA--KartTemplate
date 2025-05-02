@@ -39,8 +39,6 @@ public class PlayerBoost : MonoBehaviour
     private void Update()
     {
 
-        Debug.Log("On cd ? " + isCooldown);
-
         if (keyboardInput.GenerateInput().Boost && !isCooldown) //Si j'active le boost et qu'il est pas en CD : j'active mon boost
         {
             originalVelocity = rb.linearVelocity; //stock la vélocité d'avant le boost

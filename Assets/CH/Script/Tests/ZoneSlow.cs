@@ -10,6 +10,9 @@ public class ZoneSlow : MonoBehaviour
     private float initialSpeed;
     private float initialReverseSpeed;
 
+    [Header("fx")]
+    public GameObject waterVfx;
+
     private void Awake()
     {
         initialSpeed = kart.baseStats.TopSpeed;
@@ -20,13 +23,22 @@ public class ZoneSlow : MonoBehaviour
     {
         kart.baseStats.TopSpeed = slowedSpeed;
         kart.baseStats.ReverseSpeed = slowedSpeed;
+
+
         CameraFOVManager.ReduceFov();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Instantiate(waterVfx, kart.transform.position, Quaternion.identity);
+        
     }
 
     private void OnTriggerExit(Collider other)
     {
         kart.baseStats.TopSpeed = initialSpeed;
         kart.baseStats.ReverseSpeed = initialReverseSpeed;
+
         CameraFOVManager.ResetFov();
     }
 
