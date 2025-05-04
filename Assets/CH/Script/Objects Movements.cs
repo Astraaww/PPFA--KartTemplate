@@ -1,13 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Splines;
 
 public class ObjectsMovements : MonoBehaviour
 {
-    public GameObject metro;
-    public GameObject ptArrivé;
-    public float speed = 5f;
 
-    private bool isTriggered = false;
+    public SplineAnimate splineAnimate;
 
     [Header("Sfx")]
     public AudioSource source1;
@@ -17,7 +15,7 @@ public class ObjectsMovements : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        isTriggered = true;
+        splineAnimate.Play();
 
         source1.clip = trainHornSfx;
         source1.Play();
@@ -26,11 +24,4 @@ public class ObjectsMovements : MonoBehaviour
         source2.Play();
     }
 
-    void Update()
-    {
-        if (isTriggered)
-        {
-            metro.transform.position = Vector3.MoveTowards(metro.transform.position, ptArrivé.transform.position, speed);
-        }
-    }
 }
