@@ -12,5 +12,16 @@ namespace KartGame.UI
         {
             SceneManager.LoadSceneAsync(SceneName);
         }
+
+        public void QuitGame()
+        {
+            Debug.Log("Quitter le jeu...");
+            Application.Quit();
+
+#if UNITY_EDITOR
+            // Pour que ça fonctionne dans l'éditeur Unity
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        }
     }
 }
