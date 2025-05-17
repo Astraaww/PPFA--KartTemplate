@@ -397,6 +397,9 @@ namespace KartGame.KartSystems
                 // use this value to play kart sound when it is waiting the race start countdown.
                 return Input.Accelerate ? 1.0f : 0.0f;
             }
+
+
+
         }
 
         void OnCollisionEnter(Collision collision) => m_HasCollision = true;
@@ -426,7 +429,8 @@ namespace KartGame.KartSystems
             bool accelDirectionIsFwd = accelInput >= 0;
             bool localVelDirectionIsFwd = localVel.z >= 0;
 
-            // use the max speed for the direction we are going--forward or reverse.
+            // use the max
+            // for the direction we are going--forward or reverse.
             float maxSpeed = localVelDirectionIsFwd ? m_FinalStats.TopSpeed : m_FinalStats.ReverseSpeed;
             float accelPower = accelDirectionIsFwd ? m_FinalStats.Acceleration : m_FinalStats.ReverseAcceleration;
 

@@ -1,49 +1,58 @@
 using KartGame.KartSystems;
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
+using static Unity.VisualScripting.Member;
 
 public class ZoneSlow : MonoBehaviour
 {
     public ArcadeKart kart;
 
-    [SerializeField]public float slowedSpeed = 1f;
+    [SerializeField]public float slowedSpeed = 20f;
 
     private float initialSpeed;
     private float initialReverseSpeed;
+    private float initialAcceleration;
 
-    //[Header("fx")]
-    //public GameObject waterVfx;
+    public AudioSource source;
+    public AudioClip waterSfx;
 
     private void Awake()
     {
         //kart = GetComponent<ArcadeKart>();
         initialSpeed = kart.baseStats.TopSpeed;
         initialReverseSpeed = kart.baseStats.ReverseSpeed;
+        initialAcceleration = kart.baseStats.Acceleration;
     }
 
     private void OnTriggerStay(Collider other)
     {
-        //Debug.Log(kart.baseStats.TopSpeed);
 
         kart.baseStats.TopSpeed = slowedSpeed;
         kart.baseStats.ReverseSpeed = slowedSpeed;
+        kart.baseStats.Acceleration = 4f;
+        kart.baseStats.ReverseAcceleration = 4f;
 
+        //other.attachedRigidbody.linearVelocity.magnitude = slowedSpeed;
 
         CameraFOVManager.ReduceFov();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Instantiate(waterVfx, kart.transform.position, Quaternion.identity);
 
-        //Debug.Log("in");
+        source.clip = waterSfx;
+        source.Play();
     }
 
     private void OnTriggerExit(Collider other)
     {
         kart.baseStats.TopSpeed = initialSpeed;
         kart.baseStats.ReverseSpeed = initialReverseSpeed;
+        kart.baseStats.Acceleration = initialAcceleration;
 
         CameraFOVManager.ResetFov();
+
+        source.Stop();
     }
 
 }
